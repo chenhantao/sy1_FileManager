@@ -5,6 +5,7 @@ package cht;
  */
 public class Start {
 	public static void main(String[] args) {
+		//启动
 		TsetFrame.main(args);
 	}
 }

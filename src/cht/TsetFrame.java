@@ -113,7 +113,7 @@ public class TsetFrame extends JFrame {
 		btnC.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				path.setPath("C:\\");
+				path.setPath("C:");
 				lblNewLabel.setText((new File(path.getPath())).getAbsolutePath());
 				showList(fileList);
 			}
@@ -123,7 +123,7 @@ public class TsetFrame extends JFrame {
 		btnD.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				path.setPath("D:\\");
+				path.setPath("D:");
 				lblNewLabel.setText((new File(path.getPath())).getAbsolutePath());
 				showList(fileList);
 				
@@ -134,7 +134,7 @@ public class TsetFrame extends JFrame {
 		btnE.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				path.setPath("E:\\");
+				path.setPath("E:");
 				lblNewLabel.setText((new File(path.getPath())).getAbsolutePath());
 				showList(fileList);
 			}
@@ -144,7 +144,7 @@ public class TsetFrame extends JFrame {
 		btnF.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				path.setPath("F:\\");
+				path.setPath("F:");
 				lblNewLabel.setText((new File(path.getPath())).getAbsolutePath());
 				showList(fileList);
 				
