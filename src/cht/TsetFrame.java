@@ -145,10 +145,9 @@ public class TsetFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				path.setPath("F:\\");
-				if (path.fileList().length!=0) {
-					lblNewLabel.setText((new File(path.getPath())).getAbsolutePath());
-					showList(fileList);
-				}
+				lblNewLabel.setText((new File(path.getPath())).getAbsolutePath());
+				showList(fileList);
+				
 				
 			}
 		});
