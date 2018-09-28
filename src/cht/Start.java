@@ -1,0 +1,10 @@
+package cht;
+/**
+ *@author 陈瀚涛
+ *@version 创建时间：2018年9月28日 上午10:45:38
+ */
+public class Start {
+	public static void main(String[] args) {
+		TsetFrame.main(args);
+	}
+}
