@@ -21,7 +21,6 @@ public class Copy{
 	        if (new File(oldPath  + File.separator + filePath[i]).isFile()) {
 	            copyFile(oldPath + File.separator + filePath[i], newPath + File.separator + filePath[i]);
 	        }
-	           
 	    }
     
 	}
