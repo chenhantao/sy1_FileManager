@@ -51,7 +51,6 @@ public class Copy{
         
         //String sourcePath = "D://aa";
         //String path = "D://bb";
-        
         copyDir(sourcePath, path);
         
         sc.close();
