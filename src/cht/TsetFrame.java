@@ -26,6 +26,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JPopupMenu;
 import java.awt.Component;
+import java.util.Arrays;
+
 import javax.swing.border.CompoundBorder;
 
 import javax.swing.JMenuItem;
@@ -42,26 +44,24 @@ public class TsetFrame extends JFrame {
 	private JPanel contentPane;
 
 	//眼不见心不烦
-	JLabel label = new JLabel("请选择盘符：");
-	
-	JLabel label_1 = new JLabel("当前路径为：");
+    private JLabel label = new JLabel("请选择盘符：");
+
+	private JLabel label_1 = new JLabel("当前路径为：");
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TsetFrame frame = new TsetFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            try {
+                TsetFrame frame = new TsetFrame();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 	}
 	@SuppressWarnings({ "rawtypes" })
-	public TsetFrame() {
+    private TsetFrame() {
 		setBackground(Color.CYAN);
 		setTitle("MyFileManager");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -100,7 +100,7 @@ public class TsetFrame extends JFrame {
 						//System.out.println(path.getPath());
 					}
 				}else {
-					showList(fileList);
+					//showList(fileList);
 				}
 			}
 		});
@@ -135,7 +135,7 @@ public class TsetFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				path.setPath("E:");
-				lblNewLabel.setText((new File(path.getPath())).getAbsolutePath());
+				lblNewLabel.setText(String.valueOf((new File(path.getPath()))));
 				showList(fileList);
 			}
 		});
@@ -154,17 +154,15 @@ public class TsetFrame extends JFrame {
 		
 		
 		JButton btnBack = new JButton("BACK");
-		btnBack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					File file=new File(path.getPath());
-					if(file.getParentFile()!=null)
-					{
-						path.returnBack();
-						lblNewLabel.setText((new File(path.getPath())).getAbsolutePath());
-						showList(fileList);
-					}
-			}
-		});
+		btnBack.addActionListener(e -> {
+                File file=new File(path.getPath());
+                if(file.getParentFile()!=null)
+                {
+                    path.returnBack();
+                    lblNewLabel.setText((new File(path.getPath())).getAbsolutePath());
+                    showList(fileList);
+                }
+        });
 		
 
 
@@ -221,46 +219,42 @@ public class TsetFrame extends JFrame {
 		addPopup(fileList, popupMenu);
 		
 		JMenuItem mntmNewFile = new JMenuItem("New File");
-		mntmNewFile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String str=new String(JOptionPane.showInputDialog("请输入文件名(带后缀)"));
-				try {
-					CreateFile.createFile(new File(path.getPath()+File.separator+str));
-					showList(fileList);
-				} catch (IOException e1) {
-					
-					e1.printStackTrace();
-				}
-			}
-		});
+		mntmNewFile.addActionListener(e -> {
+            String str= JOptionPane.showInputDialog("请输入文件名(带后缀)");
+            try {
+                CreateFile createFile = new CreateFile();
+                createFile.createFile(new File(path.getPath()+File.separator+str));
+                showList(fileList);
+            } catch (IOException e1) {
+
+                e1.printStackTrace();
+            }
+        });
 		popupMenu.add(mntmNewFile);
 		
 		JMenuItem mntmNewFolder = new JMenuItem("New Folder");
-		mntmNewFolder.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String str=new String(JOptionPane.showInputDialog("请输入文件名"));
-				CreateFile.mkdir(new File(path.getPath()+File.separator+str+File.separator));
-				showList(fileList);
-			}
-		});
+		mntmNewFolder.addActionListener(e -> {
+            String str= JOptionPane.showInputDialog("请输入文件名");
+            CreateFile createFile = new CreateFile();
+            createFile.mkdir(new File(path.getPath()+File.separator+str+File.separator));
+            showList(fileList);
+        });
 		popupMenu.add(mntmNewFolder);
 		
 		JMenuItem mntmDelect = new JMenuItem("Delect");
-		mntmDelect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String fileName=new String(fileList.getSelectedValue().toString());
-				File file=new File(path.getPath()+File.separator+fileName);
-				if(file.exists()&&file.isDirectory())
-				{
-					DeleteFolder.deleteDirectory(file);
-				}
-				else if(file.exists()&&file.isFile())
-				{
-					DeleteFolder.deleteFile(file);
-				}
-				showList(fileList);
-			}
-		});
+		mntmDelect.addActionListener(e -> {
+            String fileName= fileList.getSelectedValue().toString();
+            File file=new File(path.getPath()+File.separator+fileName);
+            if(file.exists()&&file.isDirectory())
+            {
+                DeleteFolder.deleteDirectory(file);
+            }
+            else if(file.exists()&&file.isFile())
+            {
+                DeleteFolder.deleteFile(file);
+            }
+            showList(fileList);
+        });
 		popupMenu.add(mntmDelect);
 		
 		/**
@@ -278,59 +272,55 @@ public class TsetFrame extends JFrame {
 		
 		JMenuItem mntmPaste = new JMenuItem("Paste");
 		mntmPaste.setEnabled(false);
-		
-		
-		mntmCopy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String fileName=new String(fileList.getSelectedValue().toString());
-				File file=new File(path.getPath()+File.separator+fileName);
-				if(file.exists()&&file.isFile())
-				{
-					copyFilePath.setPath(file.getAbsolutePath());
-					mntmPaste.setEnabled(true);
-					copyFolderPath.setPath(null);
-				}
-				else if(file.exists()&&file.isDirectory())
-				{
-					copyFolderPath.setPath(file.getAbsolutePath());
-					copyFilePath.setPath(null);
-					mntmPaste.setEnabled(true);
-				}
-			}
-		});
-		
-		mntmPaste.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				
-				File file=new File(path.getPath());
-				
-				if(copyFilePath.getPath()!=null)
-				{
-					File copyName=new File(copyFilePath.getPath());
-					try {
-						Copy.copyFile(copyFilePath.getPath(), file.getAbsolutePath()+File.separator+copyName.getName());
-						showList(fileList);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-				else if(copyFolderPath.getPath()!=null)
-				{
-					try {
-						File file1=new File(path.getPath());
-						Copy.copyDir(copyFolderPath.getPath(), file1.getAbsolutePath());
-						System.out.println(path.getPath());
-						showList(fileList);
-						
-					} catch (IOException e) {
-						
-						e.printStackTrace();
-					}
-				}
-			}
-		});
+
+
+		mntmCopy.addActionListener(e -> {
+            String fileName= fileList.getSelectedValue().toString();
+            File file=new File(path.getPath()+File.separator+fileName);
+            if(file.exists()&&file.isFile())
+            {
+                copyFilePath.setPath(file.getAbsolutePath());
+                mntmPaste.setEnabled(true);
+                copyFolderPath.setPath(null);
+            }
+            else if(file.exists()&&file.isDirectory())
+            {
+                copyFolderPath.setPath(file.getAbsolutePath());
+                copyFilePath.setPath(null);
+                mntmPaste.setEnabled(true);
+            }
+        });
+
+		mntmPaste.addActionListener(arg0 -> {
+
+            File file=new File(path.getPath());
+
+            if(copyFilePath.getPath()!=null)
+            {
+                File copyName=new File(copyFilePath.getPath());
+                try {
+                    Copy copy = new Copy();
+                    copy.copyFile(copyFilePath.getPath(), file.getAbsolutePath()+File.separator+copyName.getName());
+                    showList(fileList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if(copyFolderPath.getPath()!=null)
+            {
+                try {
+                    File file1=new File(path.getPath());
+                    Copy copy = new Copy();
+                    copy.copyDir(copyFolderPath.getPath(), file1.getAbsolutePath());
+                    System.out.println(path.getPath());
+                    showList(fileList);
+
+                } catch (IOException e) {
+
+                    e.printStackTrace();
+                }
+            }
+        });
 		
 		
 		popupMenu.add(mntmCopy);
@@ -345,116 +335,109 @@ public class TsetFrame extends JFrame {
 		 * @param password 秘钥
 		 */
 		JMenuItem mntmEncrypted = new JMenuItem("Encrypted");
-		mntmEncrypted.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String str=new String(path.getPath()+File.separator+fileList.getSelectedValue().toString());
-				File file=new File(str);
-				if(file.isDirectory()&&file.exists())
-				{
-					JOptionPane.showMessageDialog(null, "无法加密的类型");
-				}
-				else if(file.exists()&&file.isFile())
-				{
-					String password=new String(JOptionPane.showInputDialog("请输入秘钥"));
-					Encryption temp=new Encryption(password);
-					File outFile=new File(path.getPath()+File.separator+JOptionPane.showInputDialog("请输入加密文件名称(带后缀名)"));
-					try {
-						temp.encrypt(file, outFile);
-						showList(fileList);
-					} catch (Exception e1) {
-						
-						e1.printStackTrace();
-					}
-				}
-			}
-		});
+		mntmEncrypted.addActionListener(e -> {
+            String str= path.getPath() + File.separator + fileList.getSelectedValue().toString();
+            File file=new File(str);
+            if(file.isDirectory()&&file.exists())
+            {
+                JOptionPane.showMessageDialog(null, "无法加密的类型");
+            }
+            else if(file.exists()&&file.isFile())
+            {
+                String password= JOptionPane.showInputDialog("请输入秘钥");
+                Encryption temp=new Encryption(password);
+                File outFile=new File(path.getPath()+File.separator+JOptionPane.showInputDialog("请输入加密文件名称(带后缀名)"));
+                try {
+                    temp.encrypt(file, outFile);
+                    showList(fileList);
+                } catch (Exception e1) {
+
+                    e1.printStackTrace();
+                }
+            }
+        });
 		popupMenu.add(mntmEncrypted);
 		
 		JMenuItem mntmDecrypted = new JMenuItem("Decrypted");
-		mntmDecrypted.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String str=new String(path.getPath()+File.separator+fileList.getSelectedValue().toString());
-				File file=new File(str);
-				if(file.isDirectory()&&file.exists())
-				{
-					JOptionPane.showMessageDialog(null, "无法解密的类型");
-				}
-				else if(file.exists()&&file.isFile())
-				{
-					String passwd=new String(JOptionPane.showInputDialog("请输入秘钥"));
-					Encryption temp=new Encryption(passwd);
-					File outFile=new File(path.getPath()+File.separator+JOptionPane.showInputDialog("请输入恢复文件名称(带后缀名)"));
-					try {
-						temp.decrypt(file, outFile);
-						showList(fileList);
-					} catch (Exception e1) {
-						
-						e1.printStackTrace();
-					}
-				}
-			}
-		});
+		mntmDecrypted.addActionListener(e -> {
+            String str= path.getPath() + File.separator + fileList.getSelectedValue().toString();
+            File file=new File(str);
+            if(file.isDirectory()&&file.exists())
+            {
+                JOptionPane.showMessageDialog(null, "无法解密的类型");
+            }
+            else if(file.exists()&&file.isFile())
+            {
+                String passwd= JOptionPane.showInputDialog("请输入秘钥");
+                Encryption temp=new Encryption(passwd);
+                File outFile=new File(path.getPath()+File.separator+JOptionPane.showInputDialog("请输入恢复文件名称(带后缀名)"));
+                try {
+                    temp.decrypt(file, outFile);
+                    showList(fileList);
+                } catch (Exception e1) {
+
+                    e1.printStackTrace();
+                }
+            }
+        });
 		popupMenu.add(mntmDecrypted);
 		
 		JMenuItem mntmCompress = new JMenuItem("Compress");
-		mntmCompress.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String str=new String(path.getPath()+File.separator+fileList.getSelectedValue().toString());
-				File file=new File(str);
-				String name=new String(JOptionPane.showInputDialog("请输入压缩文件的名称(无需后缀名)"));
-				try {
-					if(name.equals("")) {
-						if(ZipUtil.zipMultiFile(file, name, true))
-						{
-							JOptionPane.showMessageDialog(null,"压缩成功");
-							showList(fileList);
-						}
-						else
-						{
-							JOptionPane.showMessageDialog(null,"压缩失败");
-						}
-					}else {
-						System.out.println("取消压缩");
-					}
-				} catch (Exception e1) {
-					
-					e1.printStackTrace();
-				}
-			}
-		});
+		mntmCompress.addActionListener(e -> {
+            String str= path.getPath() + File.separator + fileList.getSelectedValue().toString();
+            File file=new File(str);
+            String name= JOptionPane.showInputDialog("请输入压缩文件的名称(无需后缀名)");
+            try {
+                if(name.equals("")) {
+                    ZipUtil zipUtil = new ZipUtil();
+                    if(zipUtil.zipMultiFile(file, name, true))
+                    {
+                        JOptionPane.showMessageDialog(null,"压缩成功");
+                        showList(fileList);
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null,"压缩失败");
+                    }
+                }else {
+                    System.out.println("取消压缩");
+                }
+            } catch (Exception e1) {
+
+                e1.printStackTrace();
+            }
+        });
 		popupMenu.add(mntmCompress);
 		
 		JMenuItem mntmDecompress = new JMenuItem("Decompress");
-		mntmDecompress.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String str=new String(path.getPath()+File.separator+fileList.getSelectedValue().toString());
-				File file=new File(str);
-				try {
-					if(file.isFile())
-					{
-						String out=new String(JOptionPane.showInputDialog("请输入解压后文件夹的名称"));
-						CreateFile.mkdir(new File(path.getPath()+"/"+out));
-						if(ZipUtil.unZip(file, new File(path.getPath()+"/"+out)))
-						{
-							JOptionPane.showMessageDialog(null,"解压成功");
-							showList(fileList);
-						}
-						else
-						{
-							JOptionPane.showMessageDialog(null,"解压失败");
-						}
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null,"不是压缩文件！");
-					}
-				} catch (Exception e1) {
-					
-					e1.printStackTrace();
-				}
-			}
-				
-		});
+		mntmDecompress.addActionListener(e -> {
+            String str= path.getPath() + File.separator + fileList.getSelectedValue().toString();
+            File file=new File(str);
+            try {
+                if(file.isFile())
+                {
+                    String out= JOptionPane.showInputDialog("请输入解压后文件夹的名称");
+                    CreateFile createFile = new CreateFile();
+                    createFile.mkdir(new File(path.getPath()+"/"+out));
+                    if(new ZipUtil().unZip(file, new File(path.getPath()+"/"+out)))
+                    {
+                        JOptionPane.showMessageDialog(null,"解压成功");
+                        showList(fileList);
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null,"解压失败");
+                    }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,"不是压缩文件！");
+                }
+            } catch (Exception e1) {
+
+                e1.printStackTrace();
+            }
+        });
 		popupMenu.add(mntmDecompress);
 				
 		
@@ -481,13 +464,14 @@ public class TsetFrame extends JFrame {
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void showList(JList list)
+    private void showList(JList list)
 	{
 		String[] strings=path.fileList();
 		System.out.println(path.getPath());
 		list.setListData(strings);
 	}
-	private static void addPopup(Component component, final JPopupMenu popup) {
+
+	private void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				if (e.isPopupTrigger()) {

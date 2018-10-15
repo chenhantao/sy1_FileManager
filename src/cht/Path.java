@@ -23,8 +23,7 @@ public class Path {
 
 	public String[] fileList()
 	{
-		String[] strings=(new File(getPath())).list();
-		return strings;
+		return (new File(getPath())).list();
 	}
 	
 	public void returnBack()

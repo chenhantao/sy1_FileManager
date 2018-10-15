@@ -14,7 +14,9 @@ import javax.crypto.CipherOutputStream;
 import javax.crypto.KeyGenerator;
 
 public class Encryption {
-	Key key;
+	private Key key;
+
+	public Encryption(){}
 
 	public Encryption(String str)
 	{
@@ -41,7 +43,7 @@ public class Encryption {
 	 * outFile为输出文件
 	 */
 	
-	public boolean encrypt(File enFile, File outFile) throws Exception
+	public void encrypt(File enFile, File outFile) throws Exception
 	{
 		if(enFile.exists()&&enFile.isFile())
 		{
@@ -61,11 +63,6 @@ public class Encryption {
 			cis.close();
 			ins.close();
 			outs.close();
-			return true;
-		}
-		else
-		{
-			return false;
 		}
 	}
 	
@@ -73,7 +70,7 @@ public class Encryption {
 	 * 解密算法
 	 * 
 	 */
-	public boolean decrypt(File file,File srcFile) throws Exception
+	public void decrypt(File file,File srcFile) throws Exception
 	{
 		if(file.exists()&&file.isFile())
 		{
@@ -93,11 +90,6 @@ public class Encryption {
 			cos.close();
 			ins.close();
 			outs.close();
-			return true;
-		}
-		else
-		{
-			return false;
 		}
 	}
 	

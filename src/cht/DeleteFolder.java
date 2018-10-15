@@ -42,21 +42,20 @@ public class DeleteFolder
 		}
 		boolean flag=true;
 		File[] files=path.listFiles();
-		for(int i=0;i<files.length;i++)
-		{
-			if(files[i].isFile())
-			{
-				flag=deleteFile(files[i]);
-				if(!flag)
-					break;
-			}
-			else if(files[i].isDirectory())
-			{
-				flag=deleteDirectory(files[i]);
-				if(!flag)
-					break;
-			}
-		}
+		if (files != null && files.length != 0) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    flag = deleteFile(file);
+                    if (!flag)
+                        break;
+                } else if (file.isDirectory()) {
+                    flag = deleteDirectory(file);
+                    if (!flag)
+                        break;
+
+                }
+            }
+        }
 		if(!flag)
 		{
 			System.out.println("删除目录失败");
