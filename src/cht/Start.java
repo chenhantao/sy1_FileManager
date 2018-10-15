@@ -7,5 +7,6 @@ public class Start {
 	public static void main(String[] args) {
 		//启动
 		TsetFrame.main(args);
+		System.out.println("文件管理器已启动");
 	}
 }
