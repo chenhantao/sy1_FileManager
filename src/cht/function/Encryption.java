@@ -43,15 +43,22 @@ public class Encryption {
 	 * outFile为输出文件
 	 */
 	
-	public void encrypt(File enFile, File outFile) throws Exception
+	public void encrypt(File file) throws Exception
 	{
-		if(enFile.exists()&&enFile.isFile())
+		if(file.exists()&&file.isFile())
 		{
 			Cipher cipher=Cipher.getInstance("DES");
 			cipher.init(Cipher.ENCRYPT_MODE,this.key);
 		
-			InputStream ins=new FileInputStream(enFile);
-			OutputStream outs=new FileOutputStream(outFile);
+			InputStream ins=new FileInputStream(file);
+
+            //加密完后的文件
+            File out = new File(file.getParent() + File.separator + "temp");
+            CreateFile createFile = new CreateFile();
+            createFile.createFile(out);
+
+
+			OutputStream outs=new FileOutputStream(out);
 		
 			CipherInputStream cis=new CipherInputStream(ins, cipher);
 			byte[] buffer=new byte[1024];
@@ -63,6 +70,12 @@ public class Encryption {
 			cis.close();
 			ins.close();
 			outs.close();
+
+            //关闭流后删除源文件，改目标文件的名字
+            DeleteFolder delete = new DeleteFolder();
+            System.out.println("删除源文件 " + (delete.deleteFile(file) ? "成功":"失败"));
+            File result = new File(out.getPath());
+            System.out.println("改名 "+ (result.renameTo(file) ? "成功":"失败"));
 		}
 	}
 	
@@ -70,26 +83,39 @@ public class Encryption {
 	 * 解密算法
 	 * 
 	 */
-	public void decrypt(File file,File srcFile) throws Exception
+	public void decrypt(File file) throws Exception
 	{
 		if(file.exists()&&file.isFile())
-		{
+		{   //加密方式
 			Cipher cipher=Cipher.getInstance("DES");
 			cipher.init(Cipher.DECRYPT_MODE,this.key);
-			
-			InputStream ins=new FileInputStream(file);
-			OutputStream outs=new FileOutputStream(srcFile);
-			
-			CipherOutputStream cos=new CipherOutputStream(outs, cipher);
+
+			//读文件
+            InputStream ins=new FileInputStream(file);
+
+            //加密完后的文件
+            File out = new File(file.getParent() + File.separator + "temp");
+            CreateFile createFile = new CreateFile();
+            createFile.createFile(out);
+
+            //输出流
+            OutputStream outs=new FileOutputStream(out);
+            //加密输出流
+            CipherOutputStream cos=new CipherOutputStream(outs, cipher);
 			byte[] buffer=new byte[1024];
 			int i;
 			while((i=ins.read(buffer))>=0)
 			{
 				cos.write(buffer,0,i);
 			}
-			cos.close();
-			ins.close();
-			outs.close();
+            ins.close();
+            cos.close();
+            outs.close();
+            //关闭流后删除源文件，改目标文件的名字
+            DeleteFolder delete = new DeleteFolder();
+            System.out.println("删除源文件 " + (delete.deleteFile(file) ? "成功":"失败"));
+            File result = new File(out.getPath());
+            System.out.println("改名 "+ (result.renameTo(file) ? "成功":"失败"));
 		}
 	}
 }

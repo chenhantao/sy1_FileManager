@@ -31,6 +31,7 @@ import java.awt.Font;
 import javax.swing.JPopupMenu;
 
 import java.awt.Component;
+import java.sql.SQLOutput;
 
 import javax.swing.border.CompoundBorder;
 
@@ -258,10 +259,11 @@ public class TsetFrame extends JFrame {
         mntmDelect.addActionListener(e -> {
             String fileName = fileList.getSelectedValue().toString();
             File file = new File(path.getPath() + File.separator + fileName);
+            DeleteFolder deleteFolder = new DeleteFolder();
             if (file.exists() && file.isDirectory()) {
-                DeleteFolder.deleteDirectory(file);
+                deleteFolder.deleteDirectory(file);
             } else if (file.exists() && file.isFile()) {
-                DeleteFolder.deleteFile(file);
+                deleteFolder.deleteFile(file);
             }
             showList(fileList);
         });
@@ -347,9 +349,9 @@ public class TsetFrame extends JFrame {
             } else if (file.exists() && file.isFile()) {
                 String password = JOptionPane.showInputDialog("请输入秘钥");
                 Encryption temp = new Encryption(password);
-                File outFile = new File(path.getPath() + File.separator + JOptionPane.showInputDialog("请输入加密文件名称(带后缀名)"));
                 try {
-                    temp.encrypt(file, outFile);
+                    temp.encrypt(file);
+                    System.out.println("加密成功");
                     showList(fileList);
                 } catch (Exception e1) {
 
@@ -368,9 +370,9 @@ public class TsetFrame extends JFrame {
             } else if (file.exists() && file.isFile()) {
                 String passwd = JOptionPane.showInputDialog("请输入秘钥");
                 Encryption temp = new Encryption(passwd);
-                File outFile = new File(path.getPath() + File.separator + JOptionPane.showInputDialog("请输入恢复文件名称(带后缀名)"));
                 try {
-                    temp.decrypt(file, outFile);
+                    temp.decrypt(file);
+                    System.out.println("解密成功");
                     showList(fileList);
                 } catch (Exception e1) {
 
