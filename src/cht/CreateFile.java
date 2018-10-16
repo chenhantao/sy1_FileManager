@@ -7,14 +7,14 @@ import java.util.Scanner;
 
 public class CreateFile{
 	
-	public static boolean createFile(File path) throws IOException{
+	public boolean createFile(File path) throws IOException{
 			path.createNewFile();
 			System.out.println("文件创建成功！");
 			return true;
 	}
 	
 	
-	public static boolean mkdir(File path)
+	public boolean mkdir(File path)
 	{
 		if(path.mkdir())
 		{
@@ -31,11 +31,11 @@ public class CreateFile{
 	{
 		@SuppressWarnings("resource")
 		Scanner input=new Scanner(System.in);
-		String path=new String(input.nextLine());
+		String path= input.nextLine();
 		File file=new File(path);
 		//create(file);
 		//createFile(file);
-		mkdir(file);
+		//mkdir(file);
 	}
 	
 }

@@ -7,25 +7,26 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Copy{
-	public static void copyDir(String oldPath, String newPath) throws IOException {
+	public void copyDir(String oldPath, String newPath) throws IOException {
         File file = new File(oldPath);
         String[] filePath = file.list();
 	    if (!(new File(newPath)).exists()) {
-	    	(new File(newPath)).mkdir();
-	    }    
-	    for (int i = 0; i < filePath.length; i++) {
-	        if ((new File(oldPath + File.separator + filePath[i])).isDirectory()) {
-	            copyDir(oldPath  + File.separator  + filePath[i], newPath  + File.separator + filePath[i]);
-	        }
-	         
-	        if (new File(oldPath  + File.separator + filePath[i]).isFile()) {
-	            copyFile(oldPath + File.separator + filePath[i], newPath + File.separator + filePath[i]);
-	        }
+	    	new File(newPath).mkdir();
 	    }
-    
+	    if (filePath != null && filePath.length != 0) {
+            for (String aFilePath : filePath) {
+                if ((new File(oldPath + File.separator + aFilePath)).isDirectory()) {
+                    copyDir(oldPath + File.separator + aFilePath, newPath + File.separator + aFilePath);
+                }
+
+                if (new File(oldPath + File.separator + aFilePath).isFile()) {
+                    this.copyFile(oldPath + File.separator + aFilePath, newPath + File.separator + aFilePath);
+                }
+            }
+        }
 	}
 	
-	public static void copyFile(String oldPath, String newPath) throws IOException {
+	public void copyFile(String oldPath, String newPath) throws IOException {
         File oldFile = new File(oldPath);
         File file = new File(newPath);
         FileInputStream in = new FileInputStream(oldFile);
@@ -51,7 +52,7 @@ public class Copy{
         
         //String sourcePath = "D://aa";
         //String path = "D://bb";
-        copyDir(sourcePath, path);
+        //copyDir(sourcePath, path);
         
         sc.close();
     }
