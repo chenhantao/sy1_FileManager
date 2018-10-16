@@ -91,7 +91,12 @@ public class TsetFrame extends JFrame {
 			{
 				if(e.getClickCount()==2)
 				{
-					File temp=new File(path.getPath()+"\\"+fileList.getSelectedValue().toString());
+                    File temp;
+                    if (String.valueOf(path.getPath().charAt(path.getPath().length() - 1)).equals(File.separator)) {
+                        temp = new File(path.getPath() + fileList.getSelectedValue().toString());
+                    }else {
+                        temp = new File(path.getPath() + File.separator + fileList.getSelectedValue().toString());
+                    }
 					if(temp.isDirectory())
 					{
 						path.updatePath(fileList.getSelectedValue().toString());
@@ -113,7 +118,7 @@ public class TsetFrame extends JFrame {
 		btnC.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				path.setPath("C:");
+                path.setPath("C:" + File.separator);
 				lblNewLabel.setText((new File(path.getPath())).getAbsolutePath());
 				showList(fileList);
 			}
@@ -123,7 +128,7 @@ public class TsetFrame extends JFrame {
 		btnD.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				path.setPath("D:");
+                path.setPath("D:" + File.separator);
 				lblNewLabel.setText((new File(path.getPath())).getAbsolutePath());
 				showList(fileList);
 				
@@ -134,7 +139,7 @@ public class TsetFrame extends JFrame {
 		btnE.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				path.setPath("E:");
+                path.setPath("E:" + File.separator);
 				lblNewLabel.setText(String.valueOf((new File(path.getPath()))));
 				showList(fileList);
 			}
@@ -144,7 +149,7 @@ public class TsetFrame extends JFrame {
 		btnF.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				path.setPath("F:");
+                path.setPath("F:" + File.separator);
 				lblNewLabel.setText((new File(path.getPath())).getAbsolutePath());
 				showList(fileList);
 				
@@ -466,9 +471,11 @@ public class TsetFrame extends JFrame {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
     private void showList(JList list)
 	{
-		String[] strings=path.fileList();
-		System.out.println(path.getPath());
-		list.setListData(strings);
+	    if (path.fileList() != null) {
+            String[] strings = path.fileList();
+            System.out.println(path.getPath());
+            list.setListData(strings);
+        }
 	}
 
 	private void addPopup(Component component, final JPopupMenu popup) {
