@@ -354,7 +354,7 @@ public class TsetFrame extends JFrame {
                     System.out.println("加密成功");
                     showList(fileList);
                 } catch (Exception e1) {
-
+                    System.out.println("加密失败");
                     e1.printStackTrace();
                 }
             }
@@ -375,7 +375,7 @@ public class TsetFrame extends JFrame {
                     System.out.println("解密成功");
                     showList(fileList);
                 } catch (Exception e1) {
-
+                    System.out.println("解密失败");
                     e1.printStackTrace();
                 }
             }
