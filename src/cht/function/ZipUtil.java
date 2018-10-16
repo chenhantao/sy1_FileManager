@@ -1,4 +1,4 @@
-package cht;
+package cht.function;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -48,16 +48,16 @@ public class ZipUtil {
      * 2015年6月9日
      */
     public boolean zipMultiFile(File file, String zipName, boolean dirFlag) throws Exception {
-        ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(new File(file.getParent() + "/" + zipName + ".zip")));
+        ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(new File(file.getParent() + File.separator + zipName + ".zip")));
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             if (files != null) {
                 if (files.length == 0) {
-                    zipOut.putNextEntry(new ZipEntry(file.getName() + "/"));
+                    zipOut.putNextEntry(new ZipEntry(file.getName() + File.separator));
                 }
                 for (File fileSec : files) {
                     if (dirFlag) {
-                        recursionZip(zipOut, fileSec, file.getName() + "/");
+                        recursionZip(zipOut, fileSec, file.getName() + File.separator);
                     } else {
                         recursionZip(zipOut, fileSec, "");
                     }
@@ -82,10 +82,10 @@ public class ZipUtil {
             File[] files = file.listFiles();
             if (files != null) {
                 if (files.length == 0) {
-                    zipOut.putNextEntry(new ZipEntry(baseDir + file.getName() + "/"));
+                    zipOut.putNextEntry(new ZipEntry(baseDir + file.getName() + File.separator));
                 } else {
                     for (File fileSec : files) {
-                        recursionZip(zipOut, fileSec, baseDir + file.getName() + "/");
+                        recursionZip(zipOut, fileSec, baseDir + file.getName() + File.separator);
                     }
                 }
             }
@@ -99,8 +99,8 @@ public class ZipUtil {
         CheckedInputStream csumi = new CheckedInputStream(fis, new Adler32());
         ZipInputStream zis = new ZipInputStream(csumi);
         BufferedInputStream bis = new BufferedInputStream(zis);
-        ZipEntry ze = null;
-        File file_out = null;
+        ZipEntry ze;
+        File file_out;
         while ((ze = zis.getNextEntry()) != null) {
             if (!ze.isDirectory()) {
                 System.out.println("解压缩" + ze.getName() + "  文件");
@@ -125,11 +125,5 @@ public class ZipUtil {
         bis.close();
         zis.close();
         return true;
-    }
-
-    public static void main(String[] args) throws Exception {
-        //zipMultiFile(new File("E:\\Java资料\\test\\asdddddd"), "test", true);
-        //unZip(new File("E:\\Java资料\\test\\test.zip"),new File("E:\\Java资料\\新建文件夹 (2)"));
-
     }
 }

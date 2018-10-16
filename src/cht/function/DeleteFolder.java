@@ -1,4 +1,4 @@
-package cht;
+package cht.function;
 
 import java.io.File;
 
@@ -71,12 +71,4 @@ public class DeleteFolder
 			return false;
 		}
 	}
-
-	
-	public static void main(String[] args)
-	{
-		File file=new File("E:\\Java资料\\test\\1.txt");
-		deleteDirectory(file);
-	}
-	
 }

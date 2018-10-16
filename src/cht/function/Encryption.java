@@ -1,4 +1,4 @@
-package cht;
+package cht.function;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -91,13 +91,5 @@ public class Encryption {
 			ins.close();
 			outs.close();
 		}
-	}
-	
-	
-	public static void main(String[] args) throws Exception
-	{
-		Encryption td=new Encryption("aaa");
-		td.encrypt(new File("E:\\Java资料\\test\\123.txt"), new File("E:\\Java资料\\test\\1234.txt"));
-		td.decrypt(new File("E:\\Java资料\\test\\1234.txt"), new File("E:\\Java资料\\test\\12345.txt"));
 	}
 }

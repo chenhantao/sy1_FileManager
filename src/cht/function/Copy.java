@@ -1,4 +1,4 @@
-package cht;
+package cht.function;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,21 +39,5 @@ public class Copy{
     
         in.close();
         out.close();
-    }
-	
-	
-	
-	public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("请输入源目录：");
-        String sourcePath = sc.nextLine();
-        System.out.println("请输入新目录：");
-        String path = sc.nextLine();
-        
-        //String sourcePath = "D://aa";
-        //String path = "D://bb";
-        //copyDir(sourcePath, path);
-        
-        sc.close();
     }
 }
