@@ -112,10 +112,18 @@ public class Encryption {
             cos.close();
             outs.close();
             //关闭流后删除源文件，改目标文件的名字
-            DeleteFolder delete = new DeleteFolder();
-            System.out.println("删除源文件 " + (delete.deleteFile(file) ? "成功":"失败"));
-            File result = new File(out.getPath());
-            System.out.println("改名 "+ (result.renameTo(file) ? "成功":"失败"));
+            //尝试一下线程操作
+            Thread deleteFile = new Thread(()->{
+                DeleteFolder delete = new DeleteFolder();
+                System.out.println("删除源文件 " + (delete.deleteFile(file) ? "成功":"失败"));
+            });
+            deleteFile.start();
+
+            Thread changeFile = new Thread(()->{
+                File result = new File(out.getPath());
+                System.out.println("改名 "+ (result.renameTo(file) ? "成功":"失败"));
+            });
+            changeFile.start();
 		}
 	}
 }
