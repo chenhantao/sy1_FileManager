@@ -347,8 +347,7 @@ public class TsetFrame extends JFrame {
             if (file.isDirectory() && file.exists()) {
                 JOptionPane.showMessageDialog(null, "无法加密的类型");
             } else if (file.exists() && file.isFile()) {
-                String password = JOptionPane.showInputDialog("请输入秘钥");
-                Encryption temp = new Encryption(password);
+                Encryption temp = new Encryption();
                 try {
                     temp.encrypt(file);
                     System.out.println("加密成功");
@@ -368,8 +367,7 @@ public class TsetFrame extends JFrame {
             if (file.isDirectory() && file.exists()) {
                 JOptionPane.showMessageDialog(null, "无法解密的类型");
             } else if (file.exists() && file.isFile()) {
-                String passwd = JOptionPane.showInputDialog("请输入秘钥");
-                Encryption temp = new Encryption(passwd);
+                Encryption temp = new Encryption();
                 try {
                     temp.decrypt(file);
                     System.out.println("解密成功");

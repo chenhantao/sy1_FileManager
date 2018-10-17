@@ -16,14 +16,14 @@ import javax.crypto.KeyGenerator;
 public class Encryption {
 	private Key key;
 
-	public Encryption(){}
+//	public Encryption(){}
+//
+//	public Encryption(String str)
+//	{
+//		getKey(str);
+//	}
 
-	public Encryption(String str)
-	{
-		getKey(str);
-	}
-	
-	public void getKey(String strKey)
+    private void getKey(String strKey)
 	{
 		try {
 			KeyGenerator generator=KeyGenerator.getInstance("DES");
@@ -45,6 +45,7 @@ public class Encryption {
 	
 	public void encrypt(File file) throws Exception
 	{
+        this.getKey(file.getName());
 		if(file.exists()&&file.isFile())
 		{
 			Cipher cipher=Cipher.getInstance("DES");
@@ -85,6 +86,7 @@ public class Encryption {
 	 */
 	public void decrypt(File file) throws Exception
 	{
+        this.getKey(file.getName());
 		if(file.exists()&&file.isFile())
 		{   //加密方式
 			Cipher cipher=Cipher.getInstance("DES");
@@ -113,17 +115,11 @@ public class Encryption {
             outs.close();
             //关闭流后删除源文件，改目标文件的名字
             //尝试一下线程操作
-            Thread deleteFile = new Thread(()->{
-                DeleteFolder delete = new DeleteFolder();
-                System.out.println("删除源文件 " + (delete.deleteFile(file) ? "成功":"失败"));
-            });
-            deleteFile.start();
+            DeleteFolder delete = new DeleteFolder();
+            System.out.println("删除源文件 " + (delete.deleteFile(file) ? "成功" : "失败"));
 
-            Thread changeFile = new Thread(()->{
-                File result = new File(out.getPath());
-                System.out.println("改名 "+ (result.renameTo(file) ? "成功":"失败"));
-            });
-            changeFile.start();
+            File result = new File(out.getPath());
+            System.out.println("改名 " + (result.renameTo(file) ? "成功":"失败"));
 		}
 	}
 }
