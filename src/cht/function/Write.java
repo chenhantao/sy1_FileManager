@@ -1,13 +1,9 @@
 package cht.function;
 
-import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.FileWriter;
 
 /**
  * @author chenhantao
@@ -21,16 +17,16 @@ public class Write {
                 createFile.createFile(new File(file.getParent() + File.separator + file.getName()));
             }
             FileInputStream fis = new FileInputStream(file);
-            FileOutputStream fos = new FileOutputStream(file);
-            int i;
-            byte[] bytes = new byte[1024];
-            while ((i = fis.read(bytes)) != -1) {
-                fos.write(bytes, 0, i);
-            }
-            fos.write(input.getBytes());
+            //FileOutputStream fos = new FileOutputStream(file);
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file,true));
+
+
+            bw.write(input);
+            bw.newLine();
 
             fis.close();
-            fos.close();
+            bw.flush();
+            bw.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,6 +37,7 @@ public class Write {
     public static void main(String[] args) {
         Write write = new Write();
         File file = new File("E:\\test.txt");
-        System.out.println(write.wirte(file, "test"));
+        System.out.println(write.wirte(file, "chenhan"));
+        System.out.println(write.wirte(file, "陈瀚涛12313212131213131121231"));
     }
 }
