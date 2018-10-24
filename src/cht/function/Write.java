@@ -33,11 +33,11 @@ public class Write {
         }
         return false;
     }
-
+    /*//
     public static void main(String[] args) {
         Write write = new Write();
         File file = new File("E:\\test.txt");
         System.out.println(write.wirte(file, "chenhan"));
         System.out.println(write.wirte(file, "陈瀚涛12313212131213131121231"));
-    }
+    }//*/
 }
