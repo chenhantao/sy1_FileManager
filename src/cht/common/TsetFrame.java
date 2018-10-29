@@ -117,7 +117,7 @@ public class TsetFrame extends JFrame {
                     } else if (temp.isFile()) {
                         System.out.println("is txt");
                         String pattern = "[\\w.]*\\.txt";
-                        System.out.println(temp.getName());
+                        //System.out.println(temp.getName());
                         //String fileName = temp.getName();
                         if (Pattern.matches(pattern, temp.getName())) {
                             System.out.println("is input");
