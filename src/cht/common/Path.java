@@ -1,4 +1,4 @@
-package cht;
+package cht.common;
 
 import java.io.File;
 

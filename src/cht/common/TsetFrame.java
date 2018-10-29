@@ -1,4 +1,4 @@
-package cht;
+package cht.common;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -31,7 +31,7 @@ import java.awt.Font;
 import javax.swing.JPopupMenu;
 
 import java.awt.Component;
-import java.sql.SQLOutput;
+import java.util.regex.Pattern;
 
 import javax.swing.border.CompoundBorder;
 
@@ -41,6 +41,7 @@ import cht.function.Copy;
 import cht.function.CreateFile;
 import cht.function.DeleteFolder;
 import cht.function.Encryption;
+import cht.function.Write;
 import cht.function.ZipUtil;
 
 
@@ -113,6 +114,17 @@ public class TsetFrame extends JFrame {
                         showList(fileList);
                         lblNewLabel.setText(path.getPath());
                         //System.out.println(path.getPath());
+                    } else if (temp.isFile()) {
+                        System.out.println("is txt");
+                        String pattern = "[\\w.]*\\.txt";
+                        System.out.println(temp.getName());
+                        //String fileName = temp.getName();
+                        if (Pattern.matches(pattern, temp.getName())) {
+                            System.out.println("is input");
+                            String str = JOptionPane.showInputDialog("请输入内容");
+                            Write write = new Write();
+                            write.wirte(temp, str);
+                        }
                     }
                 } else {
                     //showList(fileList);
@@ -234,6 +246,7 @@ public class TsetFrame extends JFrame {
             try {
                 CreateFile createFile = new CreateFile();
                 if (createFile.createFile(new File(path.getPath() + File.separator + str))) {
+
                     showList(fileList);
                 }
             } catch (IOException e1) {
