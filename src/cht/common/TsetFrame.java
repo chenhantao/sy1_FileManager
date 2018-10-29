@@ -1,4 +1,4 @@
-package cht;
+package cht.common;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -31,6 +31,7 @@ import java.awt.Font;
 import javax.swing.JPopupMenu;
 
 import java.awt.Component;
+import java.util.regex.Pattern;
 
 import javax.swing.border.CompoundBorder;
 
@@ -40,6 +41,7 @@ import cht.function.Copy;
 import cht.function.CreateFile;
 import cht.function.DeleteFolder;
 import cht.function.Encryption;
+import cht.function.Write;
 import cht.function.ZipUtil;
 
 
@@ -112,6 +114,17 @@ public class TsetFrame extends JFrame {
                         showList(fileList);
                         lblNewLabel.setText(path.getPath());
                         //System.out.println(path.getPath());
+                    } else if (temp.isFile()) {
+                        System.out.println("is txt");
+                        String pattern = "[\\w.]*\\.txt";
+                        //System.out.println(temp.getName());
+                        //String fileName = temp.getName();
+                        if (Pattern.matches(pattern, temp.getName())) {
+                            System.out.println("is input");
+                            String str = JOptionPane.showInputDialog("请输入内容");
+                            Write write = new Write();
+                            write.wirte(temp, str);
+                        }
                     }
                 } else {
                     //showList(fileList);
@@ -233,6 +246,7 @@ public class TsetFrame extends JFrame {
             try {
                 CreateFile createFile = new CreateFile();
                 if (createFile.createFile(new File(path.getPath() + File.separator + str))) {
+
                     showList(fileList);
                 }
             } catch (IOException e1) {
@@ -258,10 +272,11 @@ public class TsetFrame extends JFrame {
         mntmDelect.addActionListener(e -> {
             String fileName = fileList.getSelectedValue().toString();
             File file = new File(path.getPath() + File.separator + fileName);
+            DeleteFolder deleteFolder = new DeleteFolder();
             if (file.exists() && file.isDirectory()) {
-                DeleteFolder.deleteDirectory(file);
+                deleteFolder.deleteDirectory(file);
             } else if (file.exists() && file.isFile()) {
-                DeleteFolder.deleteFile(file);
+                deleteFolder.deleteFile(file);
             }
             showList(fileList);
         });
@@ -345,14 +360,13 @@ public class TsetFrame extends JFrame {
             if (file.isDirectory() && file.exists()) {
                 JOptionPane.showMessageDialog(null, "无法加密的类型");
             } else if (file.exists() && file.isFile()) {
-                String password = JOptionPane.showInputDialog("请输入秘钥");
-                Encryption temp = new Encryption(password);
-                File outFile = new File(path.getPath() + File.separator + JOptionPane.showInputDialog("请输入加密文件名称(带后缀名)"));
+                Encryption temp = new Encryption();
                 try {
-                    temp.encrypt(file, outFile);
+                    temp.encrypt(file);
+                    System.out.println("加密成功");
                     showList(fileList);
                 } catch (Exception e1) {
-
+                    System.out.println("加密失败");
                     e1.printStackTrace();
                 }
             }
@@ -366,14 +380,13 @@ public class TsetFrame extends JFrame {
             if (file.isDirectory() && file.exists()) {
                 JOptionPane.showMessageDialog(null, "无法解密的类型");
             } else if (file.exists() && file.isFile()) {
-                String passwd = JOptionPane.showInputDialog("请输入秘钥");
-                Encryption temp = new Encryption(passwd);
-                File outFile = new File(path.getPath() + File.separator + JOptionPane.showInputDialog("请输入恢复文件名称(带后缀名)"));
+                Encryption temp = new Encryption();
                 try {
-                    temp.decrypt(file, outFile);
+                    temp.decrypt(file);
+                    System.out.println("解密成功");
                     showList(fileList);
                 } catch (Exception e1) {
-
+                    System.out.println("解密失败");
                     e1.printStackTrace();
                 }
             }

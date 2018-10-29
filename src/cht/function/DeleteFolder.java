@@ -5,7 +5,7 @@ import java.io.File;
 public class DeleteFolder
 {
 	
-	public static boolean deleteFile(File path) {
+	public boolean deleteFile(File path) {
 		//String path=new String(Path.getPath());
 		//File file=new File(path+fileName);
 		if(path.exists() && path.isFile())
@@ -29,7 +29,7 @@ public class DeleteFolder
 	}
 	
 	
-	public static boolean deleteDirectory(File path) {
+	public boolean deleteDirectory(File path) {
 		///String dir=new String(Path.getPath()+name);
 //		if (!dir.endsWith(File.separator))
 //		{	//判断是否是目录

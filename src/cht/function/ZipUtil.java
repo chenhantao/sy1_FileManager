@@ -77,7 +77,7 @@ public class ZipUtil {
         return dirFlag;
     }
 
-    public void recursionZip(ZipOutputStream zipOut, File file, String baseDir) throws Exception {
+    private void recursionZip(ZipOutputStream zipOut, File file, String baseDir) throws Exception {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             if (files != null) {
